@@ -20,14 +20,16 @@ import com.example.demo.util.SwaggerCodeGen;
 import com.example.demo.util.Utility;
 
 @Controller
-public class FileUploadController {
+public class SwaggerRegistryController {
 
 	private final StorageService storageService;
 
 	@Autowired
-	public FileUploadController(StorageService storageService) {
+	public SwaggerRegistryController(StorageService storageService) {
 		this.storageService = storageService;
 	}
+	
+	
 
 	@GetMapping("/files/{filename:.+}")
 	@ResponseBody
