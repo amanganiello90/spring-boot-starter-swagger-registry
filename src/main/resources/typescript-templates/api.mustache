@@ -1,0 +1,89 @@
+{{>licenseInfo}}
+import * as models from '../model/models';
+import ngModuleName from '../api.module';
+
+'use strict';
+
+{{#operations}}
+{{#description}}
+/**
+ * {{&description}}
+ */
+{{/description}}
+const ngServiceName = '{{classname}}Client';
+
+@at.service(ngModuleName, ngServiceName)
+@at.inject('$log', '$http', '$httpParamSerializer', 'endpoint')
+export default class {{classname}}ClientService {
+    protected basePath = '{{basePath}}';
+    public defaultHeaders : any = {};
+    public baseURL = this.endPoint['apiBase'];
+
+    constructor(private log: angular.ILogService, protected $http: ng.IHttpService, protected $httpParamSerializer?: (d: any) => any, protected endPoint?: any) {
+        this.basePath = this.baseURL + this.basePath.substring('http://localhost/'.length, this.basePath.length);
+        log.debug(['ngService', ngServiceName, 'loaded'].join(' '));
+    }
+
+{{#operation}}
+    /**
+     * {{summary}}
+     * {{notes}}
+     {{#allParams}}* @param {{paramName}} {{description}}
+     {{/allParams}}*/
+    public {{nickname}} ({{#allParams}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/allParams}}extraHttpRequestParams?: any ) : ng.IHttpPromise<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}{}{{/returnType}}> {
+        const localVarPath = this.basePath + '{{path}}'{{#pathParams}}
+            .replace('{' + '{{baseName}}' + '}', String({{paramName}})){{/pathParams}};
+
+        let queryParameters: any = {};
+        let headerParams: any = (<any>Object).assign({}, this.defaultHeaders);
+{{#hasFormParams}}
+        let formParams: any = {};
+
+{{/hasFormParams}}
+{{#allParams}}
+{{#required}}
+        // verify required parameter '{{paramName}}' is not null or undefined
+        if ({{paramName}} === null || {{paramName}} === undefined) {
+            throw new Error('Required parameter {{paramName}} was null or undefined when calling {{nickname}}.');
+        }
+{{/required}}
+{{/allParams}}
+{{#queryParams}}
+        if ({{paramName}} !== undefined) {
+            queryParameters['{{baseName}}'] = {{paramName}};
+        }
+
+{{/queryParams}}
+{{#headerParams}}
+        headerParams['{{baseName}}'] = {{paramName}};
+
+{{/headerParams}}
+{{#hasFormParams}}
+        headerParams['Content-Type'] = 'application/x-www-form-urlencoded';
+
+{{/hasFormParams}}
+{{#formParams}}
+        formParams['{{baseName}}'] = {{paramName}};
+
+{{/formParams}}
+        let httpRequestParams: ng.IRequestConfig = {
+            method: '{{httpMethod}}',
+            url: localVarPath,
+            {{#bodyParam}}data: {{paramName}},
+            {{/bodyParam}}
+            {{#hasFormParams}}data: this.$httpParamSerializer(formParams),
+            {{/hasFormParams}}
+            params: queryParameters,
+            headers: headerParams
+        };
+
+        if (extraHttpRequestParams) {
+            httpRequestParams = (<any>Object).assign(httpRequestParams, extraHttpRequestParams);
+        }
+
+        return this.$http(httpRequestParams);
+    }
+
+{{/operation}}
+}
+{{/operations}}

@@ -1,0 +1,14 @@
+import * as api from './api/api';
+import * as angular from 'angular';
+
+const ngModuleName = '{{classname}}TestModule';
+
+{{#apiInfo}}
+const apiModule = angular.module(ngModuleName, [])
+.run(['$log', $log => $log.debug(['ngModule', ngModuleName, 'loaded'].join(' '))]).name;
+{{#apis}}
+{{#operations}}
+{{/operations}}
+{{/apis}}
+
+{{/apiInfo}}

@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Swagger UI</title>
+<style>
+.source-code {
+	display: block;
+	text-decoration: none;
+	font-weight: bold;
+	padding: 6px 8px;
+	font-size: 0.9em;
+	color: white;
+	background-color: rgb(84, 127, 0);
+	border-radius: 4px 4px 4px 4px;
+}
+</style>
+<link rel="icon" type="image/png" href="images/favicon-32x32.png"
+	sizes="32x32" />
+<link rel="icon" type="image/png" href="images/favicon-16x16.png"
+	sizes="16x16" />
+<link href='css/typography.css' media='screen' rel='stylesheet'
+	type='text/css' />
+<link href='css/reset.css' media='screen' rel='stylesheet'
+	type='text/css' />
+<link href='css/screen.css' media='screen' rel='stylesheet'
+	type='text/css' />
+<link href='css/reset.css' media='print' rel='stylesheet'
+	type='text/css' />
+<link href='css/print.css' media='print' rel='stylesheet'
+	type='text/css' />
+<script src='lib/jquery-1.8.0.min.js' type='text/javascript'></script>
+<script src='lib/jquery.slideto.min.js' type='text/javascript'></script>
+<script src='lib/jquery.wiggle.min.js' type='text/javascript'></script>
+<script src='lib/jquery.ba-bbq.min.js' type='text/javascript'></script>
+<script src='lib/handlebars-2.0.0.js' type='text/javascript'></script>
+<script src='lib/underscore-min.js' type='text/javascript'></script>
+<script src='lib/backbone-min.js' type='text/javascript'></script>
+<script src='swagger-ui.js' type='text/javascript'></script>
+<script src='lib/highlight.7.3.pack.js' type='text/javascript'></script>
+<script src='lib/jsoneditor.min.js' type='text/javascript'></script>
+<script src='lib/marked.js' type='text/javascript'></script>
+<script src='lib/swagger-oauth.js' type='text/javascript'></script>
+
+<!-- Some basic translations -->
+<!-- <script src='lang/translator.js' type='text/javascript'></script> -->
+<!-- <script src='lang/ru.js' type='text/javascript'></script> -->
+<!-- <script src='lang/en.js' type='text/javascript'></script> -->
+
+<script type="text/javascript">
+	$(function() {
+		var url = window.location.search.match(/url=([^&]+)/);
+		if (url && url.length > 1) {
+			url = decodeURIComponent(url[1]);
+		} else {
+			url = "http://" + window.location.host + "/swagger-ui-ri/";
+		}
+
+		// Pre load translate...
+		if (window.SwaggerTranslator) {
+			window.SwaggerTranslator.translate();
+		}
+		window.swaggerUi = new SwaggerUi(
+				{
+					url : url,
+					validatorUrl : undefined,
+					dom_id : "swagger-ui-container",
+					supportedSubmitMethods : [ 'get', 'post', 'put', 'delete',
+							'patch' ],
+					onComplete : function(swaggerApi, swaggerUi) {
+						if (typeof initOAuth == "function") {
+							initOAuth({
+								clientId : "your-client-id",
+								clientSecret : "your-client-secret-if-required",
+								realm : "your-realms",
+								appName : "your-app-name",
+								scopeSeparator : ",",
+								additionalQueryStringParams : {}
+							});
+						}
+
+						if (window.SwaggerTranslator) {
+							window.SwaggerTranslator.translate();
+						}
+
+						$('pre code').each(function(i, e) {
+							hljs.highlightBlock(e)
+						});
+
+						addApiKeyAuthorization();
+					},
+					onFailure : function(data) {
+						log("Unable to Load SwaggerUI");
+					},
+					docExpansion : "list",
+					jsonEditor : false,
+					apisSorter : "alpha",
+					defaultModelRendering : 'schema',
+					showRequestHeaders : false
+				});
+
+		function addApiKeyAuthorization() {
+			var key = encodeURIComponent($('#input_apiKey')[0].value);
+			if (key && key.trim() != "") {
+				var apiKeyAuth = new SwaggerClient.ApiKeyAuthorization(
+						"api_key", key, "query");
+				window.swaggerUi.api.clientAuthorizations.add("api_key",
+						apiKeyAuth);
+				log("added key " + key);
+				window.swaggerUi.load();
+			}
+		}
+
+		$('#input_apiKey').change(addApiKeyAuthorization);
+
+		// if you have an apiKey you would like to pre-populate on the page for demonstration purposes...
+		/*
+		  var apiKey = "myApiKeyXXXX123456789";
+		  $('#input_apiKey').val(apiKey);
+		 */
+
+		function log() {
+			if ('console' in window) {
+				console.log.apply(console, arguments);
+			}
+		}
+		$.ajax({
+			url : "files/yaml-filelist.txt",
+			async : false, // asynchronous request? (synchronous requests are discouraged...)
+			cache : false, // with this, you can force the browser to not make cache of the retrieved data
+			dataType : "text", // jQuery will infer this, but you can set explicitly
+			success : function(data, textStatus, jqXHR) {
+				var resourceContent = data; // can be a global variable too...
+				// process the content...
+				var arr = resourceContent.split('.yaml');
+				var options = "";
+				for (i = 0; i < arr.length - 1; i++) {
+					options = options + "<option>" + arr[i] + ".yaml</option>";
+				}
+				$("#input_baseUrl").append(options);
+
+			}
+		})
+
+		$('#upload_yaml').change(function() {
+			var selected_file_name = $(this).val();
+			if (selected_file_name.length > 0) {
+
+				$('#upload_form').submit();
+				alert("The yaml is been uploaded!");
+			} else {
+
+			}
+		})
+
+		$('#UploadYamlAncor').click(function() {
+			$('#upload_yaml').click();
+		});
+
+		$('#input_baseUrl')
+				.change(
+						function() {
+							var selected = $("#input_baseUrl")
+									.find(":selected").text();
+							var filename = selected.replace(/\.[^/.]+$/, "");
+							$('#DownloadYamlAncor').attr('href',
+									"files/" + filename + '.yaml');
+							$('#clientTypescript').attr(
+									'href',
+									"clientTypescript/" + filename
+											+ '-typescript.zip');
+							$('#clientJava').attr('href',
+									"clientJava/" + filename + '-java.zip');
+
+						});
+
+	});
+</script>
+</head>
+
+<body class="swagger-section">
+	<div id='header'>
+		<div class="swagger-ui-wrap" style="max-width: 1260px;">
+			<a id="logo" href="http://swagger.io">swagger</a>
+			<form id='api_selector'>
+				<div class='input'>
+					<select id="input_baseUrl" name="baseUrl">
+						<option selected value="base">Please select yaml file</option>
+					</select>
+				</div>
+				<div class='input'>
+					<input placeholder="api_key" id="input_apiKey" name="apiKey"
+						type="text" />
+				</div>
+				<div class='input'>
+					<a id="explore" href="#" data-sw-translate>Explore</a>
+				</div>
+				<div class='input'>
+					<a id="clientJava" style="color: white;" class="source-code"
+						href="#" data-sw-translate>Download Java Client</a>
+				</div>
+				<div class='input'>
+					<a id="clientTypescript" style="color: white;" class="source-code"
+						href="#">Download Typescript Client</a>
+				</div>
+
+				<div class='input'>
+					<a id="UploadYamlAncor" style="color: white;" class="source-code"
+						href="#">Upload Yaml</a>
+
+				</div>
+				<div class='input'>
+					<a id="DownloadYamlAncor" style="color: white;" class="source-code"
+						href="#">Download Yaml</a>
+
+				</div>
+
+
+			</form>
+
+			<form id="upload_form" method="POST" enctype="multipart/form-data"
+				action="/upload">
+				<div class='input'>
+					<input id="upload_yaml" type="file" name="file"
+						style="display: none;" class="source-code">
+
+				</div>
+
+			</form>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div id="message-bar" class="swagger-ui-wrap" data-sw-translate>&nbsp;</div>
+	<div id="swagger-ui-container" class="swagger-ui-wrap"></div>
+</body>
+</html>
