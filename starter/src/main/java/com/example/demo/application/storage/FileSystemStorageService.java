@@ -1,4 +1,4 @@
-package com.example.demo.storage;
+package com.example.demo.application.storage;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

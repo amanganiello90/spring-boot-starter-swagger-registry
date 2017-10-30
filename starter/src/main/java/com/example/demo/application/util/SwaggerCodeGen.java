@@ -1,4 +1,4 @@
-package com.example.demo.util;
+package com.example.demo.application.util;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,35 +33,40 @@ public class SwaggerCodeGen {
 
 		configurator.setOutputDir(OUTPUT_DIR);
 
-		if (language.equals("typescript-angular")) {
-			EXTRACTED_TEMPLATES = Utility.getRootPathWithoutFile() + EXTRACTED_TEMPLATES_NOT_ROOT;
-
-			if (!(new File(EXTRACTED_TEMPLATES).exists())) {
-
-				ClassLoader loader = Thread.currentThread().getContextClassLoader();
-				URL url = loader.getResource(TEMPLATE_FOLDER);
-				String path = url.getPath();
-				path = path.replace("file:/", "/");
-				if (!path.contains(".jar")) {
-					EXTRACTED_TEMPLATES = path;
-				} else {
-					String jarFile[] = path.split("!/");
-					System.out.println(jarFile[0]);
-
-					try {
-
-						Utility.unJarResources(jarFile[0], Utility.getRootPathWithoutFile(), TEMPLATE_FOLDER);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-
-			}
-
-			configurator.setTemplateDir(EXTRACTED_TEMPLATES);
-
-		}
+		/*
+		 * if (language.equals("typescript-angular")) { EXTRACTED_TEMPLATES =
+		 * Utility.getRootPathWithoutFile() + EXTRACTED_TEMPLATES_NOT_ROOT;
+		 * 
+		 * if (!(new File(EXTRACTED_TEMPLATES).exists())) {
+		 * 
+		 * Class<SwaggerCodeGen> currentClass = SwaggerCodeGen.class; URL url =
+		 * currentClass.getResource('/' + currentClass.getName().replace('.',
+		 * '/') + ".class"); String path = url.getPath();
+		 * System.out.println("folder1  " + path);
+		 * 
+		 * 
+		 * ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		 * URL url = loader.getResource(TEMPLATE_FOLDER); String path =
+		 * url.getPath(); path = path.replace("file:/", "/");
+		 * 
+		 * 
+		 * if (!path.contains(".jar")) { EXTRACTED_TEMPLATES = path;
+		 * //System.out.println("folder1  " + path); } else { // String
+		 * jarFile[] = path.split("!/"); //System.out.println("folder2  " +
+		 * jarFile[0]);
+		 * 
+		 * try {
+		 * 
+		 * Utility.unJarResources(path, Utility.getRootPathWithoutFile(),
+		 * TEMPLATE_FOLDER); } catch (IOException e) { // TODO Auto-generated
+		 * catch block e.printStackTrace(); } }
+		 * 
+		 * }
+		 * 
+		 * configurator.setTemplateDir(EXTRACTED_TEMPLATES);
+		 * 
+		 * }
+		 */
 
 		final ClientOptInput input = configurator.toClientOptInput();
 

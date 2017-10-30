@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.application;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.demo.storage.StorageFileNotFoundException;
-import com.example.demo.storage.StorageService;
-import com.example.demo.util.SwaggerCodeGen;
-import com.example.demo.util.Utility;
+import com.example.demo.application.storage.StorageFileNotFoundException;
+import com.example.demo.application.storage.StorageService;
+import com.example.demo.application.util.SwaggerCodeGen;
+import com.example.demo.application.util.Utility;
 
 @Controller
 public class SwaggerRegistryController {
@@ -28,8 +28,6 @@ public class SwaggerRegistryController {
 	public SwaggerRegistryController(StorageService storageService) {
 		this.storageService = storageService;
 	}
-	
-	
 
 	@GetMapping("/files/{filename:.+}")
 	@ResponseBody
