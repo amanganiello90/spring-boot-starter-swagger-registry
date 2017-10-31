@@ -19,6 +19,26 @@
 		<maven-invoker.version>2.1.1</maven-invoker.version>
 
 	</properties>
+	
+	<developers>
+		<developer>
+			<id>amanganiello90</id>
+			<name>Angelo Manganiello</name>
+			<email>angelo.mang@libero.it</email>
+			<roles>
+				<role>Owner</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Contributors</name>
+			<id>contributors</id>
+			<url>https://github.com/amanganiello90/spring-boot-swagger-registry/graphs/contributors</url>
+			<roles>
+				<role>Developer</role>
+				<role>Contributor</role>
+			</roles>
+		</developer>
+</developers>
 
 
 
