@@ -23,7 +23,7 @@ import com.example.demo.application.util.Utility;
 
 @Configuration
 @ComponentScan(value = { "com.example.demo.application" })
-@EnableConfigurationProperties(StorageProperties.class)
+@EnableConfigurationProperties({ StorageProperties.class, SwaggerProperties.class })
 @Conditional(ProfileCondition.class)
 public class SwaggerRegistryControllerAutoConfiguration {
 
@@ -33,8 +33,11 @@ public class SwaggerRegistryControllerAutoConfiguration {
 	@Autowired
 	ResourceLoader resourceLoader;
 
-	@Value("${swagger.yaml.artifact}")
-	private String swaggerYAMLArtifacts;
+	private final SwaggerProperties swaggerProperties;
+
+	public SwaggerRegistryControllerAutoConfiguration(SwaggerProperties swaggerProperties) {
+		this.swaggerProperties = swaggerProperties;
+	}
 
 	@Bean
 	CommandLineRunner init(StorageService storageService) {
@@ -48,7 +51,7 @@ public class SwaggerRegistryControllerAutoConfiguration {
 	@EventListener(ApplicationReadyEvent.class)
 	public void postConstruct() {
 
-		Utility.extractYAMLFromJar(swaggerYAMLArtifacts);
+		Utility.extractYAMLFromJar(swaggerProperties.getYaml());
 
 	}
 
