@@ -1,4 +1,4 @@
-package com.example.demo.application.storage;
+package com.github.amanganiello90.swagger.application.storage;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;

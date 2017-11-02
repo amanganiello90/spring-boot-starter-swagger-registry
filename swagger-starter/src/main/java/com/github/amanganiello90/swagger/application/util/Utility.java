@@ -1,4 +1,4 @@
-package com.example.demo.application.util;
+package com.github.amanganiello90.swagger.application.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,7 +20,7 @@ import org.apache.maven.shared.invoker.MavenInvocationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.example.demo.application.storage.StorageProperties;
+import com.github.amanganiello90.swagger.application.storage.StorageProperties;
 
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -34,7 +34,7 @@ public class Utility {
 	private final static String SPRING_BOOT_JAR_FOLDER = "BOOT-INF/";
 	private final static String SPRING_BOOT_LIB_FOLDER = "lib";
 	private final static String EXTRACT_DEPENDENCY_FOLDER = "target/api-dependency";
-	private final static Logger log = LoggerFactory.getLogger("");
+	private static final Logger log = LoggerFactory.getLogger(Utility.class);
 
 	public static String getRootPath() {
 

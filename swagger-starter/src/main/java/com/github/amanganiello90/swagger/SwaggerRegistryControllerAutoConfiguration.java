@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.github.amanganiello90.swagger;
 
 import org.apache.catalina.servlet4preview.ServletContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +16,12 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import com.example.demo.application.storage.StorageProperties;
-import com.example.demo.application.storage.StorageService;
-import com.example.demo.application.util.Utility;
+import com.github.amanganiello90.swagger.application.storage.StorageProperties;
+import com.github.amanganiello90.swagger.application.storage.StorageService;
+import com.github.amanganiello90.swagger.application.util.Utility;
 
 @Configuration
-@ComponentScan(value = { "com.example.demo.application" })
+@ComponentScan(value = { "com.github.amanganiello90.swagger.application" })
 @EnableConfigurationProperties({ StorageProperties.class, SwaggerProperties.class })
 @Conditional(ProfileCondition.class)
 public class SwaggerRegistryControllerAutoConfiguration {

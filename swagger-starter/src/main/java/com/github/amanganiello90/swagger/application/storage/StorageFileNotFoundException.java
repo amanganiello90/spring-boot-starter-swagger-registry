@@ -1,4 +1,4 @@
-package com.example.demo.application.storage;
+package com.github.amanganiello90.swagger.application.storage;
 
 public class StorageFileNotFoundException extends StorageException {
 

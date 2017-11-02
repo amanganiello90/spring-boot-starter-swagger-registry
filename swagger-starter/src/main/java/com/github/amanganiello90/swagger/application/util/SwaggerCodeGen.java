@@ -1,4 +1,4 @@
-package com.example.demo.application.util;
+package com.github.amanganiello90.swagger.application.util;
 
 import java.io.File;
 import java.io.IOException;

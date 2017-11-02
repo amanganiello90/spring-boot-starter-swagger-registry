@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.github.amanganiello90.swagger;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.boot.context.properties.ConfigurationProperties;

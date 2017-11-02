@@ -1,4 +1,4 @@
-package com.example.demo.application.storage;
+package com.github.amanganiello90.swagger.application.storage;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

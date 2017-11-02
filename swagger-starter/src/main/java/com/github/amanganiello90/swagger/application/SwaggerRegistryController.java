@@ -1,4 +1,4 @@
-package com.example.demo.application;
+package com.github.amanganiello90.swagger.application;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.demo.application.storage.StorageFileNotFoundException;
-import com.example.demo.application.storage.StorageService;
-import com.example.demo.application.util.SwaggerCodeGen;
-import com.example.demo.application.util.Utility;
+import com.github.amanganiello90.swagger.application.storage.StorageFileNotFoundException;
+import com.github.amanganiello90.swagger.application.storage.StorageService;
+import com.github.amanganiello90.swagger.application.util.SwaggerCodeGen;
+import com.github.amanganiello90.swagger.application.util.Utility;
 
 @Controller
 public class SwaggerRegistryController {

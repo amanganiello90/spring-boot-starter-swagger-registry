@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.github.amanganiello90.swagger;
 
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
