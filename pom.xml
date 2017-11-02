@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.example.demo</groupId>
+	<artifactId>spring-boot-starter-swagger-parent</artifactId>
+	<version>1.0-SNAPSHOT</version>
+
+	<name>swagger-parent</name>
+	<description>Swagger parent module</description>
+
+	<properties>
+		<spring-boot.version>1.5.8.RELEASE</spring-boot.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+		<exec-maven-plugin.project.version>1.4.0</exec-maven-plugin.project.version>
+		<compiler-maven-plugin.project.version>3.7.0</compiler-maven-plugin.project.version>
+	</properties>
+	<packaging>pom</packaging>
+
+	<developers>
+		<developer>
+			<id>amanganiello90</id>
+			<name>Angelo Manganiello</name>
+			<email>angelo.mang@libero.it</email>
+			<roles>
+				<role>Owner</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Contributors</name>
+			<id>contributors</id>
+			<url>https://github.com/amanganiello90/spring-boot-swagger-registry/graphs/contributors</url>
+			<roles>
+				<role>Developer</role>
+				<role>Contributor</role>
+			</roles>
+		</developer>
+	</developers>
+
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${compiler-maven-plugin.project.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+
+
+	<modules>
+		<module>swagger-starter</module>
+		<module>swagger-example</module>
+		<module>swagger-jar-yaml</module>
+	</modules>
+</project>

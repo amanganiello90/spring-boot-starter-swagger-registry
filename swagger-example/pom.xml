@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.example.demo</groupId>
+		<artifactId>spring-boot-starter-swagger-parent</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>swagger-example</artifactId>
+	<packaging>jar</packaging>
+
+	<name>swagger-example</name>
+	<description>Swagger example</description>
+
+	<properties></properties>
+
+	<dependencies>
+
+
+		<dependency>
+			<groupId>com.example.demo</groupId>
+			<artifactId>spring-boot-starter-swagger-registry</artifactId>
+			<version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-simple</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- dependency with yaml file in its jar -->
+		<dependency>
+			<groupId>com.example.demo</groupId>
+			<artifactId>swagger-jar-yaml</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<!-- -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<version>${spring-boot.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>${spring-boot.version}</version>
+		</dependency>
+
+
+	</dependencies>
+
+
+	<build>
+
+		<resources>
+			<resource>
+				<directory>${basedir}/src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
+		<plugins>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>build-info</goal>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<mainClass>com.example.demo.TestApplication</mainClass>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+
+</project>

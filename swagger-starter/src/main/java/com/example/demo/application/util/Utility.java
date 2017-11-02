@@ -17,13 +17,15 @@ import org.apache.maven.shared.invoker.InvocationRequest;
 import org.apache.maven.shared.invoker.InvocationResult;
 import org.apache.maven.shared.invoker.Invoker;
 import org.apache.maven.shared.invoker.MavenInvocationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.example.demo.application.storage.StorageProperties;
 
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.zip.ZipEntry;
-
-import com.example.demo.application.storage.StorageProperties;
 
 public class Utility {
 
@@ -31,6 +33,8 @@ public class Utility {
 	private final static String SWAGGER_FOLDER = "swagger";
 	private final static String SPRING_BOOT_JAR_FOLDER = "BOOT-INF/";
 	private final static String SPRING_BOOT_LIB_FOLDER = "lib";
+	private final static String EXTRACT_DEPENDENCY_FOLDER = "target/api-dependency";
+	private final static Logger log = LoggerFactory.getLogger("");
 
 	public static String getRootPath() {
 
@@ -219,7 +223,7 @@ public class Utility {
 		File rootFileExecutePath = new File("");
 		String rootPath = rootFileExecutePath.getAbsolutePath();
 		File locationFilePom = new File(rootPath + "/pom.xml");
-		File jarFilesLocation = new File(rootPath + "/target/dependency");
+		File jarFilesLocation = new File(rootPath + "/" + EXTRACT_DEPENDENCY_FOLDER);
 		File swaggerDestFolderFiles = new File(Utility.getRootPathWithoutFile() + SWAGGER_FOLDER);
 
 		if (locationFilePom.exists()) {
@@ -236,11 +240,8 @@ public class Utility {
 			InvocationRequest request = new DefaultInvocationRequest();
 
 			request.setPomFile(locationFilePom);
-			request.setGoals(
-					Arrays.asList("dependency:copy-dependencies -DincludeArtifactIds=" + swaggerYAMLArtifacts));
-
-			// System.out.println("******************"+swaggerYAMLArtifacts);
-
+			request.setGoals(Arrays.asList("dependency:copy-dependencies -DoutputDirectory=" + EXTRACT_DEPENDENCY_FOLDER
+					+ " -DincludeArtifactIds=" + swaggerYAMLArtifacts));
 			Invoker invoker = new DefaultInvoker();
 			invoker.setMavenHome(new File(mavenHome));
 			invoker.setOutputHandler(null);
@@ -253,34 +254,28 @@ public class Utility {
 				e.printStackTrace();
 			}
 			if (resultStart.getExitCode() != 0) {
-				throw new IllegalStateException("Impossible to retrieve jar yaml dependencies");
+				throw new IllegalStateException(
+						"Impossible to get jar yaml dependencies with maven dependency:copy plugin");
 
 			}
 
-			extractSingleJar(jarFilesLocation, swaggerDestFolderFiles);
+			if (!jarFilesLocation.exists()) {
+				/*
+				 * throw new IllegalStateException(
+				 * "The maven dependency:copy plugin has not created the jar folder. Maybe the property 'outputDirectory' is overwritten by your pom."
+				 * );
+				 */
+				log.warn(
+						"The maven dependency:copy plugin has not created the jar folder. Maybe the property 'outputDirectory' is overwritten by your pom or not exist artifact declared in your swagger property");
+			}
 
-			/*
-			 * File[] jarFiles = jarFilesLocation.listFiles();
-			 * 
-			 * if (jarFiles != null) {
-			 * 
-			 * for (File jar : jarFiles) { try {
-			 * Utility.unJarResources(jar.getAbsolutePath(),
-			 * Utility.getRootPathWithoutFile(), SWAGGER_FOLDER, null); } catch
-			 * (IOException e) { // TODO Auto-generated catch block
-			 * e.printStackTrace(); }
-			 * 
-			 * Utility.moveYAML(swaggerDestFolderFiles);
-			 * 
-			 * } }
-			 */
+			extractSingleJar(jarFilesLocation, swaggerDestFolderFiles);
 
 		}
 
 		else {
 
 			String jar = System.getProperty("java.class.path");
-			// System.out.println("****" +jar);
 			String jarFiles[] = swaggerYAMLArtifacts.split(";");
 
 			try {
