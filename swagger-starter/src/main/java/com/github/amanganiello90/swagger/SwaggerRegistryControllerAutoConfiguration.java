@@ -61,7 +61,7 @@ public class SwaggerRegistryControllerAutoConfiguration {
 			@Override
 			public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-				registry.addResourceHandler("/*.yaml").addResourceLocations(Utility.getRootPath());
+				registry.addResourceHandler("/swagger-ui/*.yaml").addResourceLocations(Utility.getRootPath());
 				registry.addResourceHandler("/**").addResourceLocations("classpath:/swagger-ui/");
 
 			}
@@ -69,7 +69,7 @@ public class SwaggerRegistryControllerAutoConfiguration {
 			@Override
 			public void addViewControllers(ViewControllerRegistry registry) {
 
-				registry.addViewController("/").setViewName("forward:/index.html");
+				registry.addViewController("/swagger-ui").setViewName("forward:/index.html");
 
 			}
 		};
