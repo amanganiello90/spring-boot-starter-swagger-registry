@@ -141,7 +141,7 @@
 				$("#input_baseUrl").append(options);
 
 			}
-		})
+		});
 
 		$('#upload_yaml').change(function() {
 			var selected_file_name = $(this).val();
@@ -152,7 +152,28 @@
 			} else {
 
 			}
-		})
+		});
+		
+			$('#explore')
+				.click(
+						function() {
+							var selected = $("#input_baseUrl")
+									.find(":selected").text();
+							var filename = selected.replace(/\.[^/.]+$/, "");
+							filename = filename + '.yaml';
+
+							$.ajax({
+								data : {},
+								success : function(result) {
+									$("#input_baseUrl").val(filename).attr(
+											'selected', 'selected');
+									alert(filename);
+								},
+								error : function(result) {
+
+								}
+							});
+						});
 
 		$('#UploadYamlAncor').click(function() {
 			$('#upload_yaml').click();
