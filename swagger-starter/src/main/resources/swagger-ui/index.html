@@ -136,7 +136,8 @@
 				var arr = resourceContent.split('.yaml');
 				var options = "";
 				for (i = 0; i < arr.length - 1; i++) {
-					options = options + "<option>" + arr[i] + ".yaml</option>";
+					var yaml=arr[i]+".yaml";
+					options = options + "<option value='"+yaml+"'>" + yaml + "</option>";
 				}
 				$("#input_baseUrl").append(options);
 
@@ -165,8 +166,8 @@
 							$.ajax({
 								data : {},
 								success : function(result) {
-									$("#input_baseUrl").val(filename).attr(
-											'selected', 'selected');
+									$("#input_baseUrl option:selected").removeAttr("selected");
+									$("#input_baseUrl option[value='"+filename +"']").attr('selected', 'selected');
 								},
 								error : function(result) {
 
