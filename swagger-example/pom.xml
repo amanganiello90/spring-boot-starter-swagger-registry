@@ -22,12 +22,6 @@
 			<groupId>com.github.amanganiello90</groupId>
 			<artifactId>spring-boot-starter-swagger-registry</artifactId>
 			<version>${project.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-simple</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<!-- dependency with yaml file in its jar -->
 		<dependency>
