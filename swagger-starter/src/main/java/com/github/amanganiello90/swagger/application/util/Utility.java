@@ -34,7 +34,7 @@ public class Utility {
 	private final static String SPRING_BOOT_JAR_FOLDER = "BOOT-INF/";
 	private final static String SPRING_BOOT_LIB_FOLDER = "lib";
 	private final static String EXTRACT_DEPENDENCY_FOLDER = "target/api-dependency";
-	private static final Logger log = LoggerFactory.getLogger(Utility.class);
+	private final static Logger log = LoggerFactory.getLogger("");
 
 	public static String getRootPath() {
 
@@ -53,6 +53,7 @@ public class Utility {
 		PrintWriter out = null;
 		String stringFile = getRootPathWithoutFile() + YAML_FILE_TEXT;
 		File f = new File(stringFile);
+		boolean contained=false;
 
 		try {
 			if (f.exists() && !f.isDirectory()) {
@@ -60,11 +61,15 @@ public class Utility {
 			} else {
 				out = new PrintWriter(stringFile);
 			}
+
+			contained = checkIfAlreadyContainsTheString(stringFile, yamlName);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 
 		} finally {
-			out.println(yamlName);
+			if (!contained) {
+				out.println(yamlName);
+			}
 			out.close();
 		}
 
@@ -346,6 +351,34 @@ public class Utility {
 			}
 		}
 
+	}
+
+	private static boolean checkIfAlreadyContainsTheString(String fileName, String stringContained) {
+		try {
+			FileReader textFileReader = new FileReader(fileName);
+			@SuppressWarnings("resource")
+			BufferedReader bufReader = new BufferedReader(textFileReader);
+
+			char[] buffer = new char[8096];
+
+			int numberOfCharsRead = bufReader.read(buffer); // read will be from
+			// memory
+			while (numberOfCharsRead != -1) {
+				// System.out.println(String.valueOf(buffer, 0,
+				// numberOfCharsRead));
+				if (String.valueOf(buffer, 0, numberOfCharsRead).contains(stringContained)) {
+					return true;
+				}
+				numberOfCharsRead = textFileReader.read(buffer);
+			}
+
+			bufReader.close();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 }
