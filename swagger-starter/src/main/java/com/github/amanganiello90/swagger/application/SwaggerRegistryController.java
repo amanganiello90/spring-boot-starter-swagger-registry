@@ -74,7 +74,7 @@ public class SwaggerRegistryController {
 
 		Utility.writeTextYAML(file.getOriginalFilename());
 
-		return "redirect:/";
+		return "redirect:/swagger-ui";
 	}
 
 	@ExceptionHandler(StorageFileNotFoundException.class)
